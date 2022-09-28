@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+
+  simple-go-api:
+    build: ./simple-go-api
+    ports:
+      - 5000:80
+
+  simple-java-api:
+    build: ./simple-java-api
+    ports:
+      - 5001:80
+
+  simple-html:
+    image: nginx
+    volumes:
+      - ./simple-html:/usr/share/nginx/html
+    ports:
+      - 5002:80
+    depends_on:
+      - simple-java-api
+      - simple-go-api

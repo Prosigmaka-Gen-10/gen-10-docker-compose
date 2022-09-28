@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<title>Simple HTML Docker</title>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	</head>
+	<body>
+
+		<div id="app">
+			<h1>daftar artikel</h1>
+			<ul>
+				<li v-for="article in articles">
+					title: {{ article.title }} <br>
+					desc: {{ article.desc }} <br>
+					content: {{ article.content }} <br><br>
+				</li>
+			</ul>
+
+			<br><br>
+
+			<button @click="searchArticle()">
+				search
+			</button>
+			<br>
+			<p>Hasil Search: {{ searchResult }}</p>
+		</div>
+
+		<script>
+			const { createApp } = Vue
+
+			createApp({
+				data() {
+					return {
+						articles: [],
+						searchResult: ''
+					}
+				},
+				methods: {
+					searchArticle () {
+						axios.get('http://localhost:5001/search')
+							.then(res => {
+								this.searchResult = res.data
+							})
+					}
+				},
+				mounted () {
+					axios.get('http://localhost:5000/articles')
+						.then(res => {
+							this.articles = res.data
+						})
+				}
+			}).mount('#app')
+		</script>
+	</body>
+</html>
